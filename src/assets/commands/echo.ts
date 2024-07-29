@@ -7,7 +7,7 @@ export default {
 		// connect all arguments into one returned output
 		let output : string = "";
 		for (const arg of args)
-			output += ` ${option}`;
+			output += ` ${arg}`;
 		// creates a message with the output
 		CREATE_MESSAGE(output);
 	}
