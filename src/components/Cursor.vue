@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Message from "./Message.vue";
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 import type { Ref } from "vue";
 
 const ALLOWED_CHARACTERS : string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()`~-=_+[]{};'|,./?\"\\\<\> ";
@@ -13,9 +13,9 @@ let IsSuperuser : Ref<boolean> = ref(false);
 let Command : Ref<string> = ref("");
 let CursorBlink : Ref<boolean> = ref(true)
 
-let sent : Ref<boolean> = true;
+let sent : boolean = true;
 
-function handle_keys(event : array) {
+function handle_keys(event : array) : void {
 	const key : string = event.key;
 	if (ALLOWED_CHARACTERS.includes(key)) {
 		Command.value += key;
@@ -26,7 +26,7 @@ function handle_keys(event : array) {
 	}
 }
 
-function destroy() {
+function destroy() : void {
 	clearInterval(cursor_blinker, handle_keys);
 	CursorBlink.value = false;
 	removeEventListener('keydown', handle_keys);
@@ -36,7 +36,7 @@ function destroy() {
 
 addEventListener("keydown", handle_keys);
 
-const cursor_blinker = setInterval(() => {
+const cursor_blinker : void = setInterval(() => {
 	CursorBlink.value = !CursorBlink.value;
 }, 500);
 

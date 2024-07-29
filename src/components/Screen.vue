@@ -2,23 +2,27 @@
 import Message from "./Message.vue";
 import Cursor from "./Cursor.vue";
 
-import { defineEmits, onMounted, ref, markRaw, watch } from "vue"
+import { onMounted, ref, markRaw, watch } from "vue"
 
-import { command_handler } from "../assets/commands.ts";
+import {
+	command_handler,
+	CREATE_CURSOR, CREATE_MESSAGE
+} from "../assets/commands.ts";
 
 const emit = defineEmits<{
 	(e: "ranCommand", val: string) : void
 }>();
 
-const History = ref([]);
+const History : Ref<array> = ref([]);
 
 function handle_command(command : string) : void {
-	command_handler(command, History)
+	command_handler(History, command);
 }
 
 onMounted(() => {
-	History.value.push({component: markRaw(Message), content: "welcome to my portfolio" });
-	History.value.push({component: markRaw(Cursor)});
+	CREATE_MESSAGE(History, "welcome to my portfolio!");
+	CREATE_MESSAGE(History, "type `help` and press enter to get a list of commands");
+	CREATE_CURSOR(History);
 });
 </script>
 
