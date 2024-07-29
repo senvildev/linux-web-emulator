@@ -1,28 +1,30 @@
 <script setup lang="ts">
-import Message from "./Message.vue";
-import Cursor from "./Cursor.vue";
+// required import to update the component list
+import { History } from "../assets/logging.ts";
 
-import { onMounted, ref, markRaw, watch } from "vue"
+import { onMounted, ref } from "vue"
 
 import {
-	command_handler,
 	CREATE_CURSOR, CREATE_MESSAGE
-} from "../assets/commands.ts";
+} from "../assets/logging.ts";
 
+import { command_handler } from "../assets/commands.ts";
+
+// emit required to handle entered commands
 const emit = defineEmits<{
 	(e: "ranCommand", val: string) : void
 }>();
 
-const History : Ref<array> = ref([]);
-
+// after a command has been entered
 function handle_command(command : string) : void {
-	command_handler(History, command);
+	command_handler(command);
 }
 
+// after the component finishes loading
 onMounted(() => {
-	CREATE_MESSAGE(History, "welcome to my portfolio!");
-	CREATE_MESSAGE(History, "type `help` and press enter to get a list of commands");
-	CREATE_CURSOR(History);
+	CREATE_MESSAGE("welcome to my portfolio!");
+	CREATE_MESSAGE("type `help` and press enter to get a list of commands");
+	CREATE_CURSOR();
 });
 </script>
 
