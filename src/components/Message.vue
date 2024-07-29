@@ -27,7 +27,7 @@ onMounted(() => {
 				// create <a> element with link and given text in the hyperlink format
 				final_content +=
 					`<a href="${split_hyperlink_content[1]}" target="_blank">${split_hyperlink_content[0]}</a>`;
-			} else final_content += split_hyperlink[0]; // i forgor
+			} else final_content += split_hyperlink_content[0]; // i forgor
 		}
 	} else final_content = content; // else set it to the normal content
 	// overwrite the inner html
