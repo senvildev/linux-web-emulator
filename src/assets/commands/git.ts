@@ -5,6 +5,6 @@ export default {
 	description: "git (wip)",
 	execute(args : object[]) {
 		// returns a project lol
-		CREATE_MESSAGE("marketplace - lorem ipsum [|@|click me|https://google.com/|@|]");
+		CREATE_MESSAGE("marketplace - project name [|@|click me|https://google.com/|@|]");
 	}
 }
