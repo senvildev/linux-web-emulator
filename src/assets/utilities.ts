@@ -1,4 +1,4 @@
-import { markRaw, ref } from "vue";
+import { markRaw, ref, h } from "vue";
 import type { Ref } from "vue";
 
 import Message from "../components/Message.vue";
@@ -26,10 +26,36 @@ class Utilities {
 		History.value.push({component: markRaw(Message), content: final_content });
 	}
 
-	create_cursor(content : string) : void {
-		if (!content)
-			content = "";
-		History.value.push({component: markRaw(Cursor), content: content });
+	create_cursor(content : string, handling : any) : void {
+		return new Promise((resolve, reject) => {
+			if (!content) content = "";
+			const cursorVNode = h(Cursor, {
+				content: content,
+				onRanCommand: (command : string) => {
+					if (handling) handling(command);
+					resolve(command);
+				}
+			});
+			History.value.push({ component: cursorVNode, content: content });
+		});
+	};
+
+	async write_file(filesystem : any, path : string, content: string, force : boolean) {
+		return new Promise(async (resolve, reject) => {
+			const check_for_file = await filesystem.get("filesystem", path);
+			const is_directory = check_for_file[check_for_file.length - 1];
+			if (!is_directory) {
+				if (check_for_file) {
+					resolve(2);
+				} else {
+					await filesystem.put("filesystem", {
+						path: path,
+						content: content
+					});
+				}
+			}
+			resolve(0);
+		});
 	}
 }
 

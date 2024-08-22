@@ -16,13 +16,9 @@ const filesystem = await openDB("filesystem", 1, {
 await filesystem.put("filesystem", { path: "/", content: "" });
 await filesystem.put("filesystem", { path: "/scripts/", content: "" });
 await filesystem.put("filesystem", { path: "/scripts/echo.js", content: "const script = {name: \"hi\",execute(args, Utilities) {console.log(\"hi\\nballs\");}}; return script;" });
-const file = await filesystem.get("filesystem", "/scripts/echo.js");
-const content = file.content;
-const funct = new Function(content);
-funct().execute([], Utilities);
 
 // handles passed commands
-async function command_handler(command : string) {
+export async function command_handler(command : string) {
 	// trims the spaces
 	command = command.trim();
 
@@ -37,9 +33,13 @@ async function command_handler(command : string) {
 		try {
 			if (given_command == "pkg") {
 				const package_command = await import("./commands/pkg.js");
-				await package_command.default.execute(split_command, Utilities)
+				await package_command.default.execute(split_command, Utilities, filesystem);
 			} else {
 				// wip
+				const file = await filesystem.get("filesystem", `/scripts/${given_command}.js`);
+				const content = file.content;
+				const file_function = new Function(content);
+				await file_function().execute(split_command, Utilities, filesystem);
 			}
 		} catch(error) {
 			// otherwise show that it doesnt exist
@@ -50,10 +50,6 @@ async function command_handler(command : string) {
 
 	// create a new cursor (timeout required dont delete)
 	setTimeout(() => {
-		utilities.create_cursor();
+		utilities.create_cursor("", command_handler);
 	});
-}
-
-export {
-	command_handler
 }

@@ -19,9 +19,7 @@ function handle_command(command : string) : void {
 
 // after the component finishes loading
 onMounted(() => {
-	//utilities.create_message("welcome to my portfolio!");
-	//utilities.create_message("type `help` and press enter to get a list of commands");
-	utilities.create_cursor("");
+	utilities.create_cursor("", handle_command);
 });
 </script>
 
@@ -29,7 +27,7 @@ onMounted(() => {
 	<div class="main" ondragstart="return false;"
 		v-for="item in History"
 	>
-		<component :is="item.component" @ran-command="handle_command" :content="item.content">
+		<component :is="item.component" :content="item.content">
 			<template #default>
 			<div v-html="item.content"></div>
 			</template>
