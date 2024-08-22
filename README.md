@@ -1,5 +1,5 @@
-# terminal web emulator
-a browser based terminal emulator with **Vue.js** and **Vite** under the **Bun** runtime in **TypeScript**.
+# linux web emulator
+a simplified linux emulator with **Vue.js** and **Vite** under the **Bun** runtime in **TypeScript**.
 
 # about
 the emulator stores files inside an **IndexedDB** database, since it offers way better storage capabilities than localStorage.
